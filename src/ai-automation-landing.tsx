@@ -21,32 +21,31 @@ export default function AIAutomationLanding() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!userInput.trim()) return;
+  if (!userInput.trim()) return;
 
-    const newMessage = { type: 'user', text: userInput };
-    setMessages(prev => [...prev, newMessage]);
-    setUserInput('');
-    setIsLoading(true);
+  const newMessage = { type: 'user', text: userInput };
+  setMessages(prev => [...prev, newMessage]);
+  setUserInput('');
+  setIsLoading(true);
 
-    try {
-      const response = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:5000/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message: userInput })
-});
-      });
+  try {
+    const response = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:5000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userInput })
+    });
 
-      const data = await response.json();
-      setMessages(prev => [...prev, { type: 'assistant', text: data.response }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { 
-        type: 'assistant', 
-        text: 'Вибачте, виникла помилка. Переконайтесь, що сервер запущено на localhost:5000' 
-      }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const data = await response.json();
+    setMessages(prev => [...prev, { type: 'assistant', text: data.response }]);
+  } catch (error) {
+    setMessages(prev => [...prev, { 
+      type: 'assistant', 
+      text: 'Вибачте, виникла помилка. Переконайтесь, що сервер запущено на localhost:5000' 
+    }]);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
