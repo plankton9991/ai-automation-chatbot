@@ -4,6 +4,18 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+app = Flask(__name__)
+# Дозволяємо запити з вашого Vercel домену
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:5173",
+            "https://*.vercel.app",  # Дозволяє всі Vercel домени
+            "https://your-project.vercel.app"  # Ваш конкретний домен
+        ]
+    }
+})
+
 # ============ СЕКЦІЯ 1: Функції ============
 
 def load_knowledge_base(file_path: str) -> str:
